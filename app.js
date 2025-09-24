@@ -7,6 +7,15 @@ const app = express();
 const { PORT = 3001 } = process.env;
 
 app.use(express.json());
+
+// Temporary authorization middleware
+app.use((req, res, next) => {
+  req.user = {
+    _id: '68d42f0460c38ca88a875f94' // test user id
+  };
+  next();
+});
+
 app.use('/', mainRouter);
 
 mongoose
