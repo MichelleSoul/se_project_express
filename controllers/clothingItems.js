@@ -1,10 +1,11 @@
 const ClothingItem = require('../models/clothingItem');
 const { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/errors');
+const { CREATED } = require('../utils/success');
 
 // GET /items - Get all items
 const getItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(200).send(items))
+    .then((items) => res.send(items))
     .catch((err) => {
       console.error(err);
       return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
@@ -16,7 +17,7 @@ const getItem = (req, res) => {
   const { itemId } = req.params;
   ClothingItem.findById(itemId)
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === 'DocumentNotFoundError') {
@@ -24,7 +25,7 @@ const getItem = (req, res) => {
       } if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
     });
 };
 
@@ -36,7 +37,7 @@ const createItem = (req, res) => {
   const owner = req.user._id;
 
   ClothingItem.create({ name, weather, imageUrl, owner })
-    .then((item) => res.status(201).send(item))
+    .then((item) => res.status(CREATED).send(item))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST).send({ message: 'Invalid data passed to create item' });
