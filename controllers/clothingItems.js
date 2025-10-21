@@ -1,5 +1,5 @@
 const ClothingItem = require('../models/clothingItem');
-const { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/errors');
+const { BAD_REQUEST, FORBIDDEN, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/errors');
 const { CREATED } = require('../utils/success');
 
 // GET /items - Get all items
@@ -49,15 +49,24 @@ const createItem = (req, res) => {
 // DELETE /items/:itemId - Delete item by id
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+  const currentUserId = req.user._id; // from auth middleware
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
+    .orFail()
     .then((item) => {
-      if (!item) {
-        return res.status(NOT_FOUND).send({ message: 'Item not found' });
+      // Check ownership
+      if (item.owner.toString() !== currentUserId) {
+        return res.status(FORBIDDEN).send({ message: 'You can only delete your own items' });
       }
-      return res.send(item);
+
+      // Delete the item
+      return ClothingItem.findByIdAndDelete(itemId)
+        .then(() => res.send({ message: 'Item deleted successfully', item }));
     })
     .catch((err) => {
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(NOT_FOUND).send({ message: 'Item not found' });
+      }
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Invalid item ID' });
       }

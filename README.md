@@ -17,10 +17,16 @@ WTWR (What to Wear?) is a weather-based clothing recommendation service. This re
 
 ## API Endpoints
 
+### Authentication
+- `POST /signin` - Sign in to the application
+  - Request body: `{ email, password }`
+- `POST /signup` - Register a new user
+  - Request body: `{ name, avatar, email, password }`
+
 ### Users
 - `GET /users` - Returns a list of all users
-- `GET /users/:userId` - Returns a specific user by ID
-- `POST /users` - Creates a new user
+- `GET /users/me` - Returns the current user's profile
+- `PATCH /users/me` - Update current user's profile
   - Request body: `{ name, avatar }`
 
 ### Clothing Items

@@ -1,20 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const mainRouter = require('./routes/index');
 
 const app = express();
 
 const { PORT = 3001 } = process.env;
 
-app.use(express.json());
+app.use(cors());
 
-// Temporary authorization middleware
-app.use((req, res, next) => {
-  req.user = {
-    _id: '68d42f0460c38ca88a875f94' // test user id
-  };
-  next();
-});
+app.use(express.json());
 
 app.use('/', mainRouter);
 
