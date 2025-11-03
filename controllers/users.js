@@ -8,16 +8,6 @@ const User = require('../models/user');
 
 const { JWT_SECRET = 'some-secret-key' } = process.env;
 
-// GET /users
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => {
-      console.error(err);
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
-    })
-};
-
 // POST /signup
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
@@ -123,4 +113,4 @@ const signIn = (req, res) => {
 };
 
 
-module.exports = { getUsers, createUser, getCurrentUser, updateCurrentUser, signIn };
+module.exports = { createUser, getCurrentUser, updateCurrentUser, signIn };

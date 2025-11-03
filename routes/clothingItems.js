@@ -1,15 +1,11 @@
 const router = require('express').Router();
 const {
-  getItems,
   getItem,
   createItem,
   deleteItem,
   likeItem,
   dislikeItem
 } = require('../controllers/clothingItems');
-
-// Get all items
-router.get('/', getItems);
 
 // Get item by ID
 router.get('/:itemId', getItem);
