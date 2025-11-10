@@ -21,11 +21,11 @@ const getItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: 'Clothing item not found' });
       } if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: 'Invalid item ID format' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
     });
 };
 
@@ -60,7 +60,7 @@ const deleteItem = (req, res) => {
       }
 
       // Delete the item
-      return ClothingItem.findByIdAndDelete(itemId)
+      return item.deleteOne()
         .then(() => res.send({ message: 'Item deleted successfully', item }));
     })
     .catch((err) => {

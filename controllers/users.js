@@ -39,9 +39,9 @@ const createUser = (req, res) => {
         return res.status(CONFLICT).send({ message: 'User with this email already exists' });
       }
       if (err.name === 'ValidationError') {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: 'Invalid user data provided' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
     });
 }
 
@@ -55,11 +55,11 @@ const getCurrentUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: 'User not found' });
       } if (err.name === 'CastError') {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: 'Invalid user ID format' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
     })
 }
 
@@ -81,12 +81,12 @@ const updateCurrentUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === 'ValidationError') {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: 'Invalid data provided for user update' });
       }
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'User not found' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server.' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
     });
 };
 
@@ -99,16 +99,27 @@ const signIn = (req, res) => {
     return res.status(BAD_REQUEST).send({ message: 'Email and password are required' });
   }
 
-  return User.findUserByCredentials(email, password)
+  return User.findOne({ email }).select('+password')
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id }, JWT_SECRET, { expiresIn: '7d' }
-      );
-      res.send({ token });
+      if (!user) {
+        return res.status(AUTH_ERROR).send({ message: 'Incorrect email or password' });
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return res.status(AUTH_ERROR).send({ message: 'Incorrect email or password' });
+          }
+          const token = jwt.sign(
+            { _id: user._id },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+          );
+          return res.send({ token });
+        });
     })
     .catch((err) => {
       console.error(err);
-      res.status(AUTH_ERROR).send({ message: 'Incorrect email or password' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'An error has occurred on the server' });
     });
 };
 
