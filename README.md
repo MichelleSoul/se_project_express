@@ -3,6 +3,11 @@
 ## About the Project
 WTWR (What to Wear?) is a weather-based clothing recommendation service. This repository contains the backend implementation for the WTWR application, providing a RESTful API that manages user profiles and clothing items. The service allows users to add clothing items suitable for different weather conditions, like or unlike items, and maintain their virtual wardrobe.
 
+## Website and Repository
+
+The Frontend for WTWR is found here: https://github.com/MichelleSoul/se_project_react
+The site is hosted on https://michelle.soon.it/
+
 ## Technologies and Techniques Used
 - **Express.js**: Web application framework
 - **MongoDB**: Database management using mongoose ODM
