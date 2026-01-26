@@ -1,3 +1,4 @@
+
 # WTWR (What to Wear?): Back End
 
 ## About the Project
@@ -5,8 +6,13 @@ WTWR (What to Wear?) is a weather-based clothing recommendation service. This re
 
 ## Website and Repository
 
-The Frontend for WTWR is found here: https://github.com/MichelleSoul/se_project_react
+The Frontend for WTWR is found here: https://github.com/MichelleSoul/se_project_react  
 The site is hosted on https://michelle.soon.it/
+
+## Project Pitch Video
+ 
+ Check out [this video](https://drive.google.com/file/d/1IgxSfEYxrecHUwG_lOVEkU82Di_SYKn0/view?usp=sharing), where I describe my project and some challenges I faced while building it.
+ 
 
 ## Technologies and Techniques Used
 - **Express.js**: Web application framework
@@ -42,3 +48,4 @@ The site is hosted on https://michelle.soon.it/
 - `DELETE /items/:itemId` - Deletes a specific item
 - `PUT /items/:itemId/likes` - Adds user's like to an item
 - `DELETE /items/:itemId/likes` - Removes user's like from an item
+
