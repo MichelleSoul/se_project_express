@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const auth = require('../middlewares/auth');
 
-const { NOT_FOUND } = require('../utils/errors');
+const NotFoundError = require('../errors/not-found-error');
 
 const userRouter = require('./users');
 const authRouter = require('./auth');
@@ -19,9 +19,8 @@ router.use(auth);
 router.use('/users', userRouter);
 router.use('/items', clothingItemRouter);
 
-
-router.use((req, res) => {
-  res.status(NOT_FOUND).json({ message: 'Resource not found' });
+router.use((req, res, next) => {
+  next(new NotFoundError('Resource not found'));
 });
 
 module.exports = router;

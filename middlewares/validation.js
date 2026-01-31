@@ -22,6 +22,11 @@ module.exports.validateCardBody = celebrate({
       'string.empty': 'The "imageUrl" field must be filled in',
       'string.uri': 'The "imageUrl" field must be a valid url',
     }),
+
+    weather: Joi.string().valid('hot', 'warm', 'cold').required().messages({
+      'any.only': 'The "weather" field must be one of the following values: hot, warm, cold',
+      'string.empty': 'The "weather" field must be filled in',
+    }),
   }),
 });
 
@@ -63,10 +68,24 @@ module.exports.validateLogin = celebrate({
   }),
 });
 
+// Update Current User
+module.exports.validateUpdateUserProfile = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).messages({
+      'string.min': 'The minimum length of the "name" field is 2',
+      'string.max': 'The maximum length of the "name" field is 30',
+    }),
+
+    avatar: Joi.string().custom(validateURL).messages({
+      'string.uri': 'The "avatar" field must be a valid url',
+    }),
+  }),
+});
+
 // ID Params
 module.exports.validateId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().hex().length(24).messages({
+    itemId: Joi.string().hex().length(24).messages({
       'string.hex': 'ID must be a hexadecimal value',
       'string.length': 'ID must be 24 characters long',
     }),
