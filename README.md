@@ -10,9 +10,10 @@ The Frontend for WTWR is found here: https://github.com/MichelleSoul/se_project_
 The site is hosted on https://michelle.soon.it/
 
 ## Project Pitch Video
- 
- Check out [this video](https://drive.google.com/file/d/1IgxSfEYxrecHUwG_lOVEkU82Di_SYKn0/view?usp=sharing), where I describe my project and some challenges I faced while building it.
- 
+
+Check out these video pitches from Sprint 13 and 15, where I describe my project and some challenges I faced while building it.
+- [First pitch](https://drive.google.com/file/d/1IgxSfEYxrecHUwG_lOVEkU82Di_SYKn0/view?usp=sharing)
+- [Second pitch](https://drive.google.com/file/d/1NQUgMqhtEeWW7_Zqp_2MqXtsy4uJkpOa/view?usp=sharing)
 
 ## Technologies and Techniques Used
 - **Express.js**: Web application framework
